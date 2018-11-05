@@ -5,6 +5,7 @@
     <ClInclude Include="WFI.h" />
     <ClInclude Include="__vm\.Main.vsarduino.h" />
     <ClInclude Include="HKY_framer.h" />
+    <ClInclude Include="UTL.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Main.ino" />
@@ -13,5 +14,6 @@
     <ClCompile Include="WFI.cpp" />
     <ClCompile Include="HKY_framer.cpp" />
     <ClCompile Include="APP_framer.cpp" />
+    <ClCompile Include="UTL.cpp" />
   </ItemGroup>
 </Project>

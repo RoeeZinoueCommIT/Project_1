@@ -1,9 +1,10 @@
-#include <dummy.h>
+
+
+#include "UTL.h"
 #include "HKY_framer.h"
 #include "WFI.h"
 #include "APP_framer.h"
-#include "WIFI.h"
-#include <ESP8266WiFi.h>
+
 
 
 typedef enum
@@ -21,12 +22,7 @@ void setup()
 	p_HKY_framer_init();
 	p_WFI_init();
 
-	WiFi.begin("TEST", "TESTPASS");
-
-	while (WiFi.status() != WL_CONNECTED) {
-		delay(500);
-		Serial.print(".");
-	}
+	
 
 	Serial.println("System boot ok");
 	Serial.println("Compile time: " + String(__TIME__) + " Date: " + String(__DATE__));
@@ -59,7 +55,7 @@ void loop()
 
 			case TEST_WIFI_MODULE:
 
-				p_WFI_print_test();
+				p_WFI_connect();
 				break;
 
 			default:

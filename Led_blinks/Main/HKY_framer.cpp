@@ -47,7 +47,7 @@ void p_HKY_show_help_menu(void)
 	Serial.println("1 \tShow help screen.\n\r");
 	Serial.println("2 \tToggle RED led.\n\r");
 	Serial.println("3 \tToggle RGB led.\n\r");
-	Serial.println("4 \tTest WIFI.\n\r");
+	Serial.println("4 \tConnect to WIFI.\n\r");
 	Serial.println("5 \tTest echo");
 	Serial.println(" ********************************* ");
 }

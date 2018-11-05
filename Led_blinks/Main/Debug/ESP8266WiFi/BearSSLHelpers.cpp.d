@@ -1,4 +1,4 @@
-C:\Users\R\ and\ M\AppData\Local\Temp\VMBuilds\Led_blinks\esp8266_esp8285\Debug\ESP8266WiFi\BearSSLHelpers.cpp.o: \
+C:\Users\R\ and\ M\AppData\Local\Temp\VMBuilds\Main\esp8266_d1\Debug\ESP8266WiFi\BearSSLHelpers.cpp.o: \
  C:\Users\R\ and\ M\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.4.2\libraries\ESP8266WiFi\src\BearSSLHelpers.cpp \
  C:\Users\R\ and\ M\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.4.2/tools/sdk/include/bearssl/bearssl.h \
  C:\Users\R\ and\ M\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.4.2/tools/sdk/include/bearssl/bearssl_hash.h \
@@ -54,6 +54,6 @@ C:\Users\R\ and\ M\AppData\Local\Temp\VMBuilds\Led_blinks\esp8266_esp8285\Debug\
  C:\Users\R\ and\ M\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.4.2\cores\esp8266/Stream.h \
  C:\Users\R\ and\ M\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.4.2\cores\esp8266/md5.h \
  C:\Users\R\ and\ M\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.4.2\cores\esp8266/debug.h \
- C:\Users\R\ and\ M\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.4.2\variants\generic/pins_arduino.h \
- C:\Users\R\ and\ M\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.4.2\variants\generic/common.h \
+ C:\Users\R\ and\ M\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.4.2\variants\d1/pins_arduino.h \
+ C:\Users\R\ and\ M\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.4.2\variants\d1/../generic/common.h \
  C:\Users\R\ and\ M\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.4.2\libraries\ESP8266WiFi\src\BearSSLHelpers.h
