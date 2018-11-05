@@ -29,7 +29,7 @@ void p_HKY_framer_init(void)
 	/*******************
 	*  INIT Serial COM
 	********************/
-	Serial.begin(9600);
+	Serial.begin(C_HKY_DEBUG_BAUD_RATE);
 
 	/*******************
 	*  INIT Module verbs
@@ -43,9 +43,13 @@ void p_HKY_framer_init(void)
 
 void p_HKY_show_help_menu(void)
 {
-	Serial.print("Click:0 \tShow help screen.\n\r");
-	Serial.print("Click:1 \tToggle RED led.\n\r");
-	Serial.print("Click:1 \tToggle RGB led.\n\r");
+	Serial.println(" ********************************* ");
+	Serial.println("1 \tShow help screen.\n\r");
+	Serial.println("2 \tToggle RED led.\n\r");
+	Serial.println("3 \tToggle RGB led.\n\r");
+	Serial.println("4 \tTest WIFI.\n\r");
+	Serial.println("5 \tTest echo");
+	Serial.println(" ********************************* ");
 }
 
 void p_HKY_rgb_toggle(void)
@@ -62,9 +66,18 @@ void p_HKY_rgb_toggle(void)
 
 void p_HKY_led_toggle(LED_NUM xi_led)
 {
-	analogWrite(xi_led, g_HKY_led_toggle_state);
-	delay(500);
-	g_HKY_led_toggle_state = !g_HKY_led_toggle_state;
+	uint16 led_cnt = 0x0;
+
+	Serial.println("Test led: " + String(xi_led) + "begin, Toggle times = " + String(C_HKY_LED_TEST_TOGGLE_TIME));
+	for (; led_cnt < C_HKY_LED_TEST_TOGGLE_TIME; led_cnt++)
+	{
+		analogWrite(xi_led, HIGH);
+		delay(500);
+		analogWrite(xi_led, LOW);
+		delay(500);
+		Serial.println(String(led_cnt));
+	}
+	
 }
 
 bool p_HKY_button_pressed(void)

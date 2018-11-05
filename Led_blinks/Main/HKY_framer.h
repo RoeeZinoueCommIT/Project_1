@@ -7,6 +7,8 @@
 	
 #include "arduino.h"
 
+#define C_HKY_DEBUG_BAUD_RATE		(115200)
+#define C_HKY_LED_TEST_TOGGLE_TIME	(10u)
 
 typedef enum
 {
