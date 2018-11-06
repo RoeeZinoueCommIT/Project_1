@@ -7,8 +7,12 @@
 #define C_WFI_PASS_MAX_BYTES		(20u)
 #define C_WFI_CONNECT_CARIEGE_RET	(0x14)
 
-const char* ssid_t = "M and R";
-const char* pass_t = "0542580920";
+const char* ssid_t = "RzWifi";
+const char* pass_t = "30011987";
+
+const char* ssid_ap = "ROEE_ADRUINO";
+const char* pass_ap = "1234";
+
 
 void p_WFI_init(void)
 {
@@ -22,6 +26,30 @@ void p_WFI_print_test(void)
 	Serial.print("WFI print from module.\n\r");
 }
 
+void p_WFI_read_status(void)
+{
+	Serial.println("Connection:");
+
+	if (WiFi.status() == WL_CONNECTED)
+	{
+		Serial.println("Connected \n\r");
+	}
+	else
+	{
+		Serial.println("Not connected \n\r");
+	}
+
+	/* Print local IPv4 address */
+	Serial.printf("IP address:\t");
+	Serial.println(WiFi.localIP());
+
+	/* Print RSSI */
+	Serial.printf("RSSI: %d [dBm]\n\r", WiFi.RSSI());
+
+	/* Print MAC address */
+	Serial.printf("MAC:\t");
+	Serial.println(WiFi.macAddress());
+}
 
 void p_WFI_connect(void)
 {
@@ -53,10 +81,14 @@ void p_WFI_connect(void)
 	Serial.println("Connect to: " + String(ssid_t));
 }
 
-
-void p_WFI_read_status(void)
+void p_WFI_disconnect(void)
 {
-	if (WiFi.status() == WL_CONNECTED)
-	Serial.print("IP address:\t");
-	Serial.println(WiFi.localIP());
+	Serial.println("Disconnect from WIFI network ...");
+	WiFi.disconnect();
+}
+
+void p_WFI_start_ap(void)
+{
+	Serial.println(WiFi.softAP("ESPsoftAP_01", "pass-to-soft-AP") ? "Ready" : "Failed!");
+	WiFi.softAP(ssid_ap, pass_ap);
 }

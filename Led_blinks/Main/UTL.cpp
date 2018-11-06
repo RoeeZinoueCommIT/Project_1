@@ -7,4 +7,3 @@ char* p_UTL_read_str_to_carriage(uint16 max_chars)
 	Serial.readBytesUntil('\n', buffer, 20);
 	return (buffer);
 }
-

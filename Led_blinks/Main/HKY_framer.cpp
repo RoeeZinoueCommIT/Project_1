@@ -1,9 +1,9 @@
-// 
-// 
-// 
+
+/*%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% INCLUDES %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% */
 
 #include "HKY_framer.h"
 
+/* %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% GLOBAL VARIABLES %%%%%%%%%%%%%%%%%%%%%%%%%%%%% */
 
 const int LDR = A0;
 const int BUTTON = 4;
@@ -11,9 +11,10 @@ const int RED = 15;
 const int GREEN = 12;
 const int BLUE = 13;
 
-
 uint16 g_HKY_key_cnt;
 bool g_HKY_led_toggle_state;
+
+/*%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% FUNCTIONS IMPLEMENTATION %%%%%%%%%%%%%%%%%%%%%%%%%%% */
 
 void p_HKY_framer_init(void)
 {
@@ -38,18 +39,6 @@ void p_HKY_framer_init(void)
 	g_HKY_led_toggle_state = false;
 
 	Serial.print("HKY module init OK.\n\r");
-
-}
-
-void p_HKY_show_help_menu(void)
-{
-	Serial.println(" ********************************* ");
-	Serial.println("1 \tShow help screen.\n\r");
-	Serial.println("2 \tToggle RED led.\n\r");
-	Serial.println("3 \tToggle RGB led.\n\r");
-	Serial.println("4 \tConnect to WIFI.\n\r");
-	Serial.println("5 \tTest echo");
-	Serial.println(" ********************************* ");
 }
 
 void p_HKY_rgb_toggle(void)
@@ -77,7 +66,6 @@ void p_HKY_led_toggle(LED_NUM xi_led)
 		delay(500);
 		Serial.println(String(led_cnt));
 	}
-	
 }
 
 bool p_HKY_button_pressed(void)

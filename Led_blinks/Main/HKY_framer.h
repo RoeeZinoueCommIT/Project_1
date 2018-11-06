@@ -17,7 +17,6 @@ typedef enum
 }LED_NUM;
 
 void p_HKY_framer_init(void);
-void p_HKY_show_help_menu(void);
 void p_HKY_rgb_toggle(void);
 void p_HKY_led_toggle(LED_NUM led);
 bool p_HKY_button_pressed(void);

@@ -10,6 +10,10 @@
 void p_WFI_init(void);
 void p_WFI_print_test(void);
 void p_WFI_connect(void);
+void p_WFI_read_status(void);
+void p_WFI_disconnect(void);
+void p_WFI_start_ap(void);
+
 #else
 	#include "WProgram.h"
 #endif
