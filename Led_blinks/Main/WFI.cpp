@@ -2,6 +2,7 @@
 #include "WFI.h"
 #include "UTL.h"
 #include <ESP8266WiFi.h>
+#include <ESP8266WebServer.h>
 
 #define C_WFI_SSID_MAX_BYTES		(20u)
 #define C_WFI_PASS_MAX_BYTES		(20u)
@@ -13,6 +14,7 @@ const char* pass_t = "30011987";
 const char* ssid_ap = "ROEE_ADRUINO";
 const char* pass_ap = "1234";
 
+ESP8266WebServer server(80);    // Create a webserver object that listens for HTTP request on port 80
 
 void p_WFI_init(void)
 {
@@ -89,6 +91,20 @@ void p_WFI_disconnect(void)
 
 void p_WFI_start_ap(void)
 {
-	Serial.println(WiFi.softAP("ESPsoftAP_01", "pass-to-soft-AP") ? "Ready" : "Failed!");
-	WiFi.softAP(ssid_ap, pass_ap);
+	bool flag_connect = false;
+	flag_connect = WiFi.softAP("AParduino_01", "AP-1-2-3");
+	if (true == flag_connect)
+	{
+		Serial.println("A.P establish O.K, A.P IPV4:");
+		Serial.println(WiFi.softAPIP());
+	}
+	else if (false == flag_connect)
+	{
+		Serial.println("Fail to establish A.P \n\r ");
+	}
+	
+	/* Begin web server using mDSN - connection*/
+	// server.on()
+
+	
 }

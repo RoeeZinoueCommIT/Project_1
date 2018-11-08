@@ -61,5 +61,4 @@ C:\Users\roeez\AppData\Local\Temp\VMBuilds\Main\esp8266_d1\Debug\APP_framer.cpp.
  C:\Users\roeez\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.4.2\variants\d1/pins_arduino.h \
  C:\Users\roeez\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.4.2\variants\d1/../generic/common.h \
  C:\Users\roeez\AppData\Local\Temp\VMBuilds\Main\esp8266_d1\Debug\WFI.h \
- C:\Users\roeez\AppData\Local\Temp\VMBuilds\Main\esp8266_d1\Debug\HKY_framer.h \
- C:\Program\ Files\ (x86)\Microsoft\ Visual\ Studio\2017\Community\Common7\IDE\Extensions\ktpce3c3.a4z\Micro\ Platforms\default\debuggers\VM_DBG/VM_DBG.h
+ C:\Users\roeez\AppData\Local\Temp\VMBuilds\Main\esp8266_d1\Debug\HKY_framer.h

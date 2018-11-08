@@ -9,6 +9,7 @@
 
 uint8_t g_APP_disp_opt;
 uint8_t g_APP_opt_offset;
+uint8_t g_APP_prev_key;
 APP_ERR g_APP_err;
 
 /*%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% LOCAL DECLARATIONS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% */
@@ -20,6 +21,7 @@ static void p_APP_gpio_fsm(void);
 static void p_APP_show_help_menu(void);
 static void p_APP_show_gpio_menu(void);
 static void p_APP_show_wifi_menu(void);
+
 /*%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% FUNCTIONS IMPLEMENTATION %%%%%%%%%%%%%%%%%%%%%%%%%%% */
 
 void p_APP_framer_init(void)
@@ -31,6 +33,8 @@ void p_APP_framer_init(void)
 	g_APP_opt_offset = MAIN_BASE;
 	g_APP_disp_opt = MAIN_HELP;
 	g_APP_err = APP_ERR_NO_ERR;
+
+	g_APP_prev_key = 0x0;
 	
 }
 
@@ -41,13 +45,19 @@ APP_ERR p_APP_cyclic_main(APP_CYCLE c_cont)
 		if (Serial.available())
 		{
 			g_APP_disp_opt = Serial.read() - '0' + g_APP_opt_offset;
-			Serial.println(">" + g_APP_disp_opt);
-			Serial.println(g_APP_disp_opt);
 		}
-		
+#if 0		
+		if (g_APP_prev_key != g_APP_disp_opt)
+		{
+			Serial.println(g_APP_disp_opt);
+			g_APP_prev_key = g_APP_disp_opt;
+		}
+#endif
+
+		p_APP_gpio_fsm();
 		p_APP_main_fsm();
 		p_APP_wifi_fsm();
-		p_APP_gpio_fsm();
+		
 	}
 	return (g_APP_err);
 }
@@ -114,10 +124,6 @@ void p_APP_gpio_fsm(void)
 			g_APP_opt_offset = MAIN_BASE;
 			g_APP_disp_opt = MAIN_HELP;
 			break;
-
-		default:
-			g_APP_disp_opt = GPIO_MENU;
-			break;
 	}
 }
 
@@ -155,10 +161,6 @@ void p_APP_wifi_fsm(void)
 		case WIFI_TO_MAIN_MENU:
 			g_APP_opt_offset = MAIN_BASE;
 			g_APP_disp_opt = MAIN_HELP;
-			break;
-
-		default:
-			g_APP_disp_opt = WIFI_MENU;
 			break;
 	}
 }

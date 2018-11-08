@@ -5,8 +5,8 @@
 #include "WFI.h"
 #include "APP_framer.h"
 
-/* Reset Call back to address 0 */
-void(*resetFunc) (void) = 0; //declare reset function @ address 0
+/* Declare reset function @ address 0 */
+void(*p_MAIN_reset_func) (void) = 0; 
 
 void setup()
 {
@@ -25,7 +25,7 @@ void loop()
 			break;
 
 		case APP_ERR_REST_PROG:
-			resetFunc();
+			p_MAIN_reset_func();
 			break;
 	}
 }
