@@ -155,7 +155,11 @@ void p_APP_wifi_fsm(void)
 
 		case WIFI_START_AP:
 			p_WFI_start_ap();
-			g_APP_disp_opt = WIFI_MENU;
+			g_APP_disp_opt = WIFI_LISTEN_HTTP_CLIENTS;
+			break;
+
+		case WIFI_LISTEN_HTTP_CLIENTS:
+			p_WFI_listen_http_client();
 			break;
 
 		case WIFI_TO_MAIN_MENU:
