@@ -1,11 +1,14 @@
-// APP_framer.h
 
 #ifndef _APP_FRAMER_h
 #define _APP_FRAMER_h
 
 #if defined(ARDUINO) && ARDUINO >= 100
-	
+
+/*%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% INCLUDES %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% */
+
 #include "arduino.h"
+
+/*%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% ENUMS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% */
 
 typedef enum
 {
@@ -54,6 +57,8 @@ typedef enum
 	WIFI_TO_MAIN_MENU,
 	WIFI_MENU_OPT_MAX
 }SERIAL_WIFI_MENU_OPT;
+
+/*%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% PUBLIC DECLARATIONS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% */
 
 void p_APP_framer_init(void);
 APP_ERR p_APP_cyclic_main(APP_CYCLE c_cont);

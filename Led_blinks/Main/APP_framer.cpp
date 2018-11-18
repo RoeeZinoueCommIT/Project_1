@@ -111,7 +111,7 @@ void p_APP_gpio_fsm(void)
 			break;
 
 		case GPIO_TURN_LED:
-			p_HKY_led_toggle(RED_LED);
+			p_HKY_led_toggle(C_HKY_GPIO_LED_BLUE, 5);
 			g_APP_disp_opt = GPIO_MENU;
 			break;
 
@@ -200,6 +200,7 @@ void p_APP_show_wifi_menu(void)
 	Serial.printf("%d \tShow WIFI connection info.\n\r", WIFI_SHOW_INFO - WIFI_BASE);
 	Serial.printf("%d \tDisconnect from A.P..\n\r", WIFI_DISCONNECT - WIFI_BASE);
 	Serial.printf("%d \tStart new A.P..\n\r", WIFI_START_AP - WIFI_BASE);
+	Serial.printf("%d \tListen client requests.\n\r", WIFI_LISTEN_HTTP_CLIENTS - WIFI_BASE);
 	Serial.printf("%d \tBack to main menu.\n\r", WIFI_TO_MAIN_MENU - WIFI_BASE);
 	Serial.println("*********** *********** *********** \n\r");
 }

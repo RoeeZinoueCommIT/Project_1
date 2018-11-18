@@ -13,6 +13,7 @@ void setup()
 	p_APP_framer_init();
 	p_HKY_framer_init();
 	p_WFI_init();
+	p_HKY_led_toggle(C_HKY_GPIO_LED_BLUE, 2);
 }
 
 void loop()

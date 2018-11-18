@@ -5,12 +5,6 @@
 
 /* %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% GLOBAL VARIABLES %%%%%%%%%%%%%%%%%%%%%%%%%%%%% */
 
-const int LDR = A0;
-const int BUTTON = 4;
-const int RED = 15;
-const int GREEN = 12;
-const int BLUE = 13;
-
 uint16 g_HKY_key_cnt;
 bool g_HKY_led_toggle_state;
 
@@ -21,11 +15,15 @@ void p_HKY_framer_init(void)
 	/************** 
 	*  INIT GPIO
 	***************/
-	pinMode(LDR, INPUT);
-	pinMode(BUTTON, INPUT);
-	pinMode(RED, OUTPUT);
-	pinMode(GREEN, OUTPUT);
-	pinMode(BLUE, OUTPUT);
+	/* LDR LED configuration */
+	pinMode(C_HKY_LDR, INPUT);
+	pinMode(C_HKY_GPIO_BUTTON, INPUT);
+	pinMode(C_HKY_RGB_LED_RED, OUTPUT);
+	pinMode(C_HKY_RGB_LED_GREEN, OUTPUT);
+	pinMode(C_HKY_RGB_LED_BLUE, OUTPUT);
+
+	/* Blue led configuration */
+	pinMode(C_HKY_GPIO_LED_BLUE, OUTPUT);
 
 	/*******************
 	*  INIT Serial COM
@@ -44,32 +42,29 @@ void p_HKY_framer_init(void)
 void p_HKY_rgb_toggle(void)
 {
 	Serial.print("LDR: ");
-	Serial.println(analogRead(LDR));
+	Serial.println(analogRead(C_HKY_LDR));
 	Serial.print("BUTTON: ");
-	Serial.println(digitalRead(BUTTON));
+	Serial.println(digitalRead(C_HKY_GPIO_BUTTON));
 
-	analogWrite(RED, random(0, 1023));
-	analogWrite(GREEN, random(0, 1023));
-	analogWrite(BLUE, random(0, 1023));
+	analogWrite(C_HKY_RGB_LED_RED, random(0, 1023));
+	analogWrite(C_HKY_RGB_LED_GREEN, random(0, 1023));
+	analogWrite(C_HKY_RGB_LED_BLUE, random(0, 1023));
 }
 
-void p_HKY_led_toggle(LED_NUM xi_led)
+void p_HKY_led_toggle(uint16 xi_led, uint16 xi_times)
 {
 	uint16 led_cnt = 0x0;
 
-	Serial.println("Test led: " + String(xi_led) + "begin, Toggle times = " + String(C_HKY_LED_TEST_TOGGLE_TIME));
-	for (; led_cnt < C_HKY_LED_TEST_TOGGLE_TIME; led_cnt++)
+	Serial.println("Test led: " + String(xi_led) + " Toggle times = " + String(xi_times) + " begin... ");
+	for (; led_cnt < xi_times * 2; led_cnt++)
 	{
-		analogWrite(xi_led, HIGH);
-		delay(500);
-		analogWrite(xi_led, LOW);
-		delay(500);
-		Serial.println(String(led_cnt));
+		digitalWrite(xi_led, !digitalRead(xi_led));
+		delay(C_HKY_LED_TOGGLE_TIME_MSEC);
 	}
 }
 
 bool p_HKY_button_pressed(void)
 {
-	return digitalRead(BUTTON) == LOW ? true: false;
+	return digitalRead(C_HKY_GPIO_BUTTON) == LOW ? true: false;
 }
 

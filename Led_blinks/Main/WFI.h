@@ -1,11 +1,14 @@
-// WFI.h
 
 #ifndef _WFI_h
 #define _WFI_h
 
 #if defined(ARDUINO) && ARDUINO >= 100
-	
+
+/*%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% INCLUDES %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% */
+
 #include "arduino.h"
+
+/*%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% PUBLIC DECLARATIONS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% */
 
 void p_WFI_init(void);
 void p_WFI_print_test(void);
