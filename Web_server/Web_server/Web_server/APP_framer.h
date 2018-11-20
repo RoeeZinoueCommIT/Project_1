@@ -78,5 +78,6 @@ APP_ERR p_APP_cyclic_main(APP_CYCLE c_cont);
 #else
 	#include "WProgram.h"
 #endif
-#endif
+
+#endif /* _APP_FRAMER_h */
 

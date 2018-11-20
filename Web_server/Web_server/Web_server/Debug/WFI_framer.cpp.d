@@ -124,6 +124,8 @@ C:\Users\R\ and\ M\AppData\Local\Temp\VMBuilds\Web_server\esp8266_d1\Debug\WFI_f
  C:\Users\R\ and\ M\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.4.2\libraries\ESP8266WiFi\src/WiFiClientSecure.h \
  C:\Users\R\ and\ M\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.4.2\libraries\ESP8266WiFi\src/WiFiClientSecureAxTLS.h \
  C:\Users\R\ and\ M\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.4.2\libraries\ESP8266WiFi\src/include/ssl.h \
+ C:\Users\R\ and\ M\Documents\Arduino\libraries\arduinoWebSockets-master\src/WebSocketsServer.h \
+ C:\Users\R\ and\ M\Documents\Arduino\libraries\arduinoWebSockets-master\src/WebSockets.h \
  C:\Users\R\ and\ M\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.4.2\libraries\ESP8266WebServer\src/ESP8266WebServer.h \
  C:\Users\R\ and\ M\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.4.2\libraries\ESP8266WebServer\src/detail/RequestHandler.h \
  C:\Users\R\ and\ M\AppData\Local\arduino15\packages\esp8266\hardware\esp8266\2.4.2\libraries\ESP8266mDNS/ESP8266mDNS.h \

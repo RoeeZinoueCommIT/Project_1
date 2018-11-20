@@ -1,4 +1,3 @@
-// SFS_framer.h
 
 #ifndef _SFS_FRAMER_h
 #define _SFS_FRAMER_h
@@ -24,6 +23,5 @@ void p_SFS_fomrat(void);
 	#include "WProgram.h"
 #endif
 
-
-#endif
+#endif /* _SFS_FRAMER_h */
 

@@ -1,3 +1,9 @@
+/****************************************************************
+* Brief      
+* Module name: 
+* Version: 1_001
+* Date: 29-10-2018
+****************************************************************/
 
 /*%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% INCLUDES %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% */
 
@@ -28,20 +34,27 @@ void p_SFS_framer_init(void)
 bool p_SFS_get_file(String xi_file_name, File* xo_file, String* xo_file_suffix)
 {
 	bool res = false;
-	
-	xi_file_name = "/" + xi_file_name;
+	String file_path = "", file_path_gz = "";
+
+	file_path = "/" + xi_file_name;
+	file_path_gz = file_path + ".gz";
 
 	*xo_file_suffix = p_SFS_get_file_extension(xi_file_name);
-
-	if (true == SPIFFS.exists(xi_file_name))
+	
+	if ((true == SPIFFS.exists(file_path_gz)) || (true == SPIFFS.exists(file_path)))
 	{
-		*xo_file = SPIFFS.open(xi_file_name, "r");
+		if (true == SPIFFS.exists(file_path_gz))
+		{	
+			file_path += ".gz";
+		}
+		
+		*xo_file = SPIFFS.open(file_path, "r");
 		res = true;
 	}
 	else
 	{
 		res = false;
-	}
+	}	            
 
 	return (res);
 }
@@ -50,17 +63,17 @@ void p_SFS_list_all_files(void)
 {
 	Serial.println("List all SPIFFS files \n\r");
 
-	String file_name = "", file_size = "";
+	String file_name = "";
+	size_t file_size = 0x0;
 	Dir dir = SPIFFS.openDir("/");
 	while (dir.next()) 
 	{
-		file_name += dir.fileName();
-		file_name += " / ";
-
+		file_name = dir.fileName();
 		file_size += dir.fileSize();
-		file_size += "\r\n";
+
+		Serial.print("File name: " + file_name + " File size: " + String(file_size) + "\n\r");
 	}
-	Serial.print("File name: " + file_name + " File size: " + file_size + "\n\r");
+	
 }
 
 void p_SFS_fomrat(void)

@@ -22,6 +22,5 @@ void p_WFI_listen_http_client(void);
 	#include "WProgram.h"
 #endif
 
-
-#endif
+#endif /* _WFI_FRAMER_h */
 

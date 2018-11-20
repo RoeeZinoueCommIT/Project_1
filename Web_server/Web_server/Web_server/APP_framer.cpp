@@ -1,3 +1,9 @@
+/****************************************************************
+* Brief
+* Module name:
+* Version: 1_001
+* Date: 29-10-2018
+****************************************************************/
 
 /*%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% INCLUDES %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% */
 
@@ -33,8 +39,8 @@ void p_APP_framer_init(void)
 	Serial.println("Compile time: " + String(__TIME__) + " Date: " + String(__DATE__));
 	delay(500);
 
-	g_APP_opt_offset = MAIN_BASE;
-	g_APP_disp_opt = MAIN_HELP;
+	g_APP_opt_offset = WIFI_BASE;
+	g_APP_disp_opt = WIFI_LISTEN_HTTP_CLIENTS;
 	g_APP_err = APP_ERR_NO_ERR;
 	g_APP_prev_key = 0x0;
 	

@@ -1,9 +1,18 @@
+/****************************************************************
+* Desctiption:  
+* Module name: WFI
+* Version: 1_001
+* Date: 20-11-2018
+****************************************************************/
+
 /*%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% INCLUDES %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% */
 
 #include <ESP8266WiFi.h>
+#include <WebSocketsServer.h>
 #include <ESP8266WebServer.h>
 #include <ESP8266mDNS.h>
 #include <ESP8266WiFiMulti.h>
+
 
 #include "WFI_framer.h"
 #include "HKY_framer.h"
@@ -16,70 +25,15 @@
 #define C_WFI_CONNECT_CARIEGE_RET	(0x14)
 
 #define C_WFI_MDNS_NAME				("WFI")
+
 /* %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% GLOBAL VARIABLES %%%%%%%%%%%%%%%%%%%%%%%%%%%%% */
 
 const char* ssid_ap = "ROEE_ADRUINO";
 const char* pass_ap = "1234";
 
 ESP8266WebServer server(80);    // Create a webserver object that listens for HTTP request on port 80
+WebSocketsServer webSocket(81);    // create a websocket server on port 81
 ESP8266WiFiMulti wifiMulti;     // Create an instance of the ESP8266WiFiMulti class, called 'wifiMulti'
-
-
-
-
-const char INDEX_HTML[] =
-"<!DOCTYPE HTML>"
-"<html>"
-"<head>"
-"<meta name = \"viewport\" content = \"width = device-width, initial-scale = 1.0, maximum-scale = 1.0, user-scalable=0\">"
-"<title>ESP8266 Web Form Demo</title>"
-"<style>"
-"\"body { background-color: #808080; font-family: Arial, Helvetica, Sans-Serif; Color: #000000; }\""
-"</style>"
-"</head>"
-"<body>"
-"<h1>ESP8266 Relay Test Web Form</h1>"
-"<FORM action=\"/\" method=\"post\">"
-"<P>"
-"Relay<br>"
-"<INPUT type=\"text\" name=\"delay\"<BR>"
-"<INPUT type=\"submit\" value=\"Send\"> <INPUT type=\"reset\">"
-"</P>"
-"</FORM>"
-"</body>"
-"</html>";
-
-
-const char C_WPI_FIRST_PAGE[] = 
-"<!DOCTYPE html>"
-"<html>"
-"<body>"
-"<h2>Main page</h2>"
-"<FORM action=\"/\" method=\"post\">"
-"<input type='submit' name='Toggle GPIO' value='Toggle Blue led' formAction=\"/LED\"/>"
-"<BR>"
-"<input type='submit' name='update' value='View system statistics' formAction=\"/STAT\"/>"
-"<BR>"
-"</FORM>"
-"<br><br><br><br> <footer><p>Developed by: Roee Z</p><p><a href=\"mailto:someone@example.com\">znroee@gmail.com</a>.</p></footer>"
-"</body>"
-"</html>";
-
-
-
-const char C_WPI_STAT_PAGE[] =
-"<!DOCTYPE html>"
-"<html>"
-"<body>"
-"<h2>System statistic page</h2>"
-"<FORM action=\"/\" method=\"post\">"
-"<p align ='left' style='font-size:160%'><b> System run time:<input type='text' name='USERNAME' placeholder='user name' required></b></p><br>"
-"<p align ='left' style='font-size:160%'><b> GPIOs state:<input type='text' name='USERNAME' placeholder='user name' required></b></p><br>"
-"<input type='submit' name='update' value='Back to main page' formAction=\"/MANU\"/>"
-"<BR>"
-"</FORM>"
-"</body>"
-"</html>";
 
 
 /*%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% LOCAL DECLARATIONS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% */
@@ -102,6 +56,17 @@ void p_WFI_server_handle_first_page(void);
 void p_WFI_print_connect_info(void);
 bool p_WFI_send_page_from_fs(String xi_file_name);
 
+/* Web-socket events */
+
+void webSocketEvent(uint8_t num, WStype_t type, uint8_t * payload, size_t lenght);
+
+const int LEDPIN = 0;
+// Current LED status
+bool LEDStatus;
+
+// Commands sent through Web Socket
+const char LEDON[] = "ledon";
+const char LEDOFF[] = "ledoff";
 
 /*%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% FUNCTIONS IMPLEMENTATION %%%%%%%%%%%%%%%%%%%%%%%%%%% */
 
@@ -113,6 +78,11 @@ void p_WFI_framer_init(void)
 	p_WFI_start_mdns();
 	p_WFI_start_server();
 	p_WFI_print_connect_info();
+
+	/* Web socket init */
+	webSocket.begin();                          // start the websocket server
+	webSocket.onEvent(webSocketEvent);          // if there's an incomming websocket message, go to function 'webSocketEvent'
+	Serial.println("WebSocket server started.");
 
 	Serial.println("WFI module init O.K \n\r");
 }
@@ -275,7 +245,7 @@ void p_WFI_server_handle_led()
 
 void p_WFI_server_handle_statistic()
 {           
-	p_WFI_send_page_from_fs("main.html");
+	p_WFI_send_page_from_fs("GPIO_web.html");
 	
 }
 
@@ -283,7 +253,7 @@ void p_WFI_server_handle_statistic()
 
 void p_WFI_server_handle_first_page()
 {
-	server.send(200, "text/html", C_WPI_FIRST_PAGE);
+	p_WFI_send_page_from_fs("GPIO_web.html");
 }
 
 void handleNotFound() 
@@ -293,6 +263,7 @@ void handleNotFound()
 
 void p_WFI_listen_http_client(void)
 {
+	webSocket.loop();
 	server.handleClient();                    // Listen for HTTP requests from clients
 }
 
@@ -319,4 +290,64 @@ bool p_WFI_send_page_from_fs(String xi_file_name)
 	}
 
 	return (ret);
+}
+
+void webSocketEvent(uint8_t num, WStype_t type, uint8_t * payload, size_t length)
+{
+	Serial.printf("webSocketEvent(%d, %d, ...)\r\n", num, type);
+	switch (type) 
+	{
+		case WStype_DISCONNECTED:
+			Serial.printf("[%u] Disconnected!\r\n", num);
+			break;
+	
+		case WStype_CONNECTED:
+		{
+			IPAddress ip = webSocket.remoteIP(num);
+			Serial.printf("[%u] Connected from %d.%d.%d.%d url: %s\r\n", num, ip[0], ip[1], ip[2], ip[3], payload);
+			// Send the current LED status
+			if (LEDStatus) 
+			{
+				webSocket.sendTXT(num, LEDON, strlen(LEDON));
+			}
+			else 
+			{
+				webSocket.sendTXT(num, LEDOFF, strlen(LEDOFF));
+			}
+		}
+		break;
+	
+		case WStype_TEXT:
+			Serial.printf("[%u] get Text: %s\r\n", num, payload);
+
+			if (strcmp(LEDON, (const char *)payload) == 0) 
+			{
+				p_HKY_led_toggle(C_HKY_GPIO_LED_BLUE, 1);
+				webSocket.sendTXT(num, LEDON, strlen(LEDON));
+			}
+			else if (strcmp(LEDOFF, (const char *)payload) == 0) 
+			{
+				p_HKY_led_toggle(C_HKY_GPIO_LED_BLUE, 4);
+				webSocket.sendTXT(num, LEDOFF, strlen(LEDOFF));
+			}
+			else 
+			{
+				Serial.println("Unknown command");
+			}
+			// send data to all connected clients
+			webSocket.broadcastTXT(payload, length);
+			break;
+	
+		case WStype_BIN:
+			Serial.printf("[%u] get binary length: %u\r\n", num, length);
+			hexdump(payload, length);
+
+			// echo data back to browser
+			webSocket.sendBIN(num, payload, length);
+			break;
+	
+		default:
+			Serial.printf("Invalid WStype [%d]\r\n", type);
+			break;
+	}
 }
