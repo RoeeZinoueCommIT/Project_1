@@ -7,7 +7,7 @@
 
 #include "WFI_framer.h"
 #include "HKY_framer.h"
-
+#include "SFS_framer.h"
 
 /* %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% DEFINES %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% */
 
@@ -18,14 +18,14 @@
 #define C_WFI_MDNS_NAME				("WFI")
 /* %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% GLOBAL VARIABLES %%%%%%%%%%%%%%%%%%%%%%%%%%%%% */
 
-const char* ssid_t = "Comm-it Embedded";
-const char* pass_t = "klop2233";
-
 const char* ssid_ap = "ROEE_ADRUINO";
 const char* pass_ap = "1234";
 
 ESP8266WebServer server(80);    // Create a webserver object that listens for HTTP request on port 80
 ESP8266WiFiMulti wifiMulti;     // Create an instance of the ESP8266WiFiMulti class, called 'wifiMulti'
+
+
+
 
 const char INDEX_HTML[] =
 "<!DOCTYPE HTML>"
@@ -65,6 +65,8 @@ const char C_WPI_FIRST_PAGE[] =
 "</body>"
 "</html>";
 
+
+
 const char C_WPI_STAT_PAGE[] =
 "<!DOCTYPE html>"
 "<html>"
@@ -78,6 +80,8 @@ const char C_WPI_STAT_PAGE[] =
 "</FORM>"
 "</body>"
 "</html>";
+
+
 /*%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% LOCAL DECLARATIONS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% */
 
 /* Init functions */
@@ -96,6 +100,7 @@ void handleNotFound(void);
 /* General methods */
 void p_WFI_server_handle_first_page(void);
 void p_WFI_print_connect_info(void);
+bool p_WFI_send_page_from_fs(String xi_file_name);
 
 
 /*%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% FUNCTIONS IMPLEMENTATION %%%%%%%%%%%%%%%%%%%%%%%%%%% */
@@ -136,6 +141,7 @@ bool p_WFI_start_wifi_multi()
 	bool res = false;
 
 	wifiMulti.addAP("Comm-it Embedded", "klop2233");
+	wifiMulti.addAP("M and R", "0542580920");
 
 	while (wifiMulti.run() != WL_CONNECTED)
 	{
@@ -214,12 +220,12 @@ void p_WFI_connect(void)
 	//memcpy(pass, p_UTL_read_str_to_carriage(C_WFI_PASS_MAX_BYTES), C_WFI_PASS_MAX_BYTES);
 
 
-	Serial.println("Connecting to SSID: ");
-	Serial.println(ssid);
-	Serial.println("PASS: ");
-	Serial.println(pass);
+	//Serial.println("Connecting to SSID: ");
+	//Serial.println(ssid);
+	//Serial.println("PASS: ");
+	//Serial.println(pass);
 
-	WiFi.begin(ssid_t, pass_t);
+	//WiFi.begin(ssid_t, pass_t);
 	// put your setup code here, to run once:
 	while (WiFi.status() != WL_CONNECTED) 
 	{
@@ -269,8 +275,11 @@ void p_WFI_server_handle_led()
 
 void p_WFI_server_handle_statistic()
 {           
-	server.send(200, "text/html", C_WPI_STAT_PAGE);
+	p_WFI_send_page_from_fs("main.html");
+	
 }
+
+
 
 void p_WFI_server_handle_first_page()
 {
@@ -285,4 +294,29 @@ void handleNotFound()
 void p_WFI_listen_http_client(void)
 {
 	server.handleClient();                    // Listen for HTTP requests from clients
+}
+
+bool p_WFI_send_page_from_fs(String xi_file_name)
+{
+	File file;
+	String file_suffix;
+	bool ret = false;
+
+	ret = p_SFS_get_file(xi_file_name, &file, &file_suffix);
+	
+	if (true == ret)
+	{
+		server.streamFile(file, file_suffix);
+		file.close();
+
+		Serial.println("File: " + xi_file_name + " found and load.\n\r");
+	}
+	else
+	{
+		Serial.println("File: " + xi_file_name + " Not found in SPIFFS storage");
+		Serial.println("File: " + xi_file_name + " not found.\n\r");
+		server.send(404, "text/plain", "404: Not found"); 
+	}
+
+	return (ret);
 }

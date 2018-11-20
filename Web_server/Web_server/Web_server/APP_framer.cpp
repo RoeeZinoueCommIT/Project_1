@@ -4,7 +4,7 @@
 #include "APP_framer.h"
 #include "WFI_framer.h"
 #include "HKY_framer.h"
-
+#include "SFS_framer.h"
 
 /* %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% GLOBAL VARIABLES %%%%%%%%%%%%%%%%%%%%%%%%%%%%% */
 
@@ -18,10 +18,12 @@ APP_ERR g_APP_err;
 static void p_APP_main_fsm(void);
 static void p_APP_wifi_fsm(void);
 static void p_APP_gpio_fsm(void);
+static void p_APP_spiffs_fsm(void);
 
 static void p_APP_show_help_menu(void);
 static void p_APP_show_gpio_menu(void);
 static void p_APP_show_wifi_menu(void);
+static void p_APP_show_spiffs_menu(void);
 
 /*%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% FUNCTIONS IMPLEMENTATION %%%%%%%%%%%%%%%%%%%%%%%%%%% */
 
@@ -46,18 +48,11 @@ APP_ERR p_APP_cyclic_main(APP_CYCLE c_cont)
 		{
 			g_APP_disp_opt = Serial.read() - '0' + g_APP_opt_offset;
 		}
-#if 0		
-		if (g_APP_prev_key != g_APP_disp_opt)
-		{
-			Serial.println(g_APP_disp_opt);
-			g_APP_prev_key = g_APP_disp_opt;
-		}
-#endif
 
 		p_APP_gpio_fsm();
 		p_APP_main_fsm();
 		p_APP_wifi_fsm();
-		
+		p_APP_spiffs_fsm();
 	}
 	return (g_APP_err);
 }
@@ -82,6 +77,11 @@ void p_APP_main_fsm(void)
 		case MAIN_WIFI_MENU:
 			g_APP_opt_offset = WIFI_BASE;
 			g_APP_disp_opt = WIFI_MENU;
+			break;
+
+		case MAIN_SPIFFS_MENU:
+			g_APP_opt_offset = SPIFFS_BASE;
+			g_APP_disp_opt = SPIFFS_MENU;
 			break;
 
 		case MAIN_REST_PROG:
@@ -169,14 +169,41 @@ void p_APP_wifi_fsm(void)
 	}
 }
 
+void p_APP_spiffs_fsm(void)
+{
+	switch (g_APP_disp_opt)
+	{
+		case SPIFFS_BASE:
+			break;
+			
+		case SPIFFS_MENU:
+			p_APP_show_spiffs_menu();
+			g_APP_disp_opt = SPIFFS_BASE;
+			break;
 
+		case SPIFFS_LIST:
+			p_SFS_list_all_files();
+			g_APP_disp_opt = SPIFFS_BASE;
+			break;
+
+		case SPIFFS_FORMAT:
+			p_SFS_fomrat();
+			break;
+
+		case SPIFFS_TO_MAIN_MENU:
+			g_APP_opt_offset = MAIN_BASE;
+			g_APP_disp_opt = MAIN_HELP;
+			break;
+	}
+}
 
 void p_APP_show_help_menu(void)
 {
 	Serial.println("*********** *********** ***********");
 	Serial.printf("%d \tShow application help.\n\r", MAIN_HELP);
 	Serial.printf("%d \tShow GPIO menu.\n\r", MAIN_GPIO_MENU);
-	Serial.printf("%d \tShow WIFI menu.\n\r", MAIN_WIFI_MENU); 
+	Serial.printf("%d \tShow WIFI menu.\n\r", MAIN_WIFI_MENU);
+	Serial.printf("%d \tShow SPIFFS menu.\n\r", MAIN_SPIFFS_MENU);
 	Serial.printf("%d \tSW Reset program.\n\r", MAIN_REST_PROG);
 	Serial.printf("%d \tExit from program.\n\r", MAIN_EXIT_PROG);
 	Serial.println("*********** *********** *********** \n\r");
@@ -204,3 +231,16 @@ void p_APP_show_wifi_menu(void)
 	Serial.printf("%d \tBack to main menu.\n\r", WIFI_TO_MAIN_MENU - WIFI_BASE);
 	Serial.println("*********** *********** *********** \n\r");
 }
+
+void p_APP_show_spiffs_menu(void)
+{
+	Serial.println("*********** *********** ***********");
+	Serial.printf("%d \tShow SPIFFS help screen.\n\r", SPIFFS_MENU -SPIFFS_BASE);
+	Serial.printf("%d \tList SPIFFS files.\n\r", SPIFFS_LIST - SPIFFS_BASE);
+	Serial.printf("%d \tFormat SPIFFS storage.\n\r", SPIFFS_FORMAT - SPIFFS_BASE);
+	Serial.printf("%d \tBack to main menu.\n\r", SPIFFS_TO_MAIN_MENU - SPIFFS_BASE);
+	Serial.println("*********** *********** *********** \n\r");
+}
+
+
+
