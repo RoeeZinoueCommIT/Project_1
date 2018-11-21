@@ -1,8 +1,8 @@
 /****************************************************************
-* Desctiption:  
+* Description: Wifi controler interface level module.
 * Module name: WFI
 * Version: 1_001
-* Date: 20-11-2018
+* Date: 29-10-2018
 ****************************************************************/
 
 /*%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% INCLUDES %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% */
@@ -350,4 +350,36 @@ void webSocketEvent(uint8_t num, WStype_t type, uint8_t * payload, size_t length
 			Serial.printf("Invalid WStype [%d]\r\n", type);
 			break;
 	}
+}
+
+void p_WFI_file_upload()
+{
+		HTTPUpload& upload = server.upload();
+		if (upload.status == UPLOAD_FILE_START) 
+		{
+			String filename = upload.filename;
+			if (!filename.startsWith("/")) filename = "/" + filename;
+			Serial.print("handleFileUpload Name: "); 
+			Serial.println(filename);
+			fsUploadFile = SPIFFS.open(filename, "w");            // Open the file for writing in SPIFFS (create if it doesn't exist)
+			filename = String();
+		}
+		else if (upload.status == UPLOAD_FILE_WRITE) 
+		{
+			if (fsUploadFile)
+				fsUploadFile.write(upload.buf, upload.currentSize); // Write the received bytes to the file
+		}
+		else if (upload.status == UPLOAD_FILE_END) 
+		{
+			if (fsUploadFile) 
+			{                                    // If the file was successfully created
+				fsUploadFile.close();                               // Close the file again
+				Serial.print("handleFileUpload Size: "); Serial.println(upload.totalSize);
+				server.sendHeader("Location", "/success.html");      // Redirect the client to the success page
+				server.send(303);
+			}
+			else 
+			{
+				server.send(500, "text/plain", "500: couldn't create file");
+			}
 }

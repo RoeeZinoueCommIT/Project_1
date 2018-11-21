@@ -1,6 +1,6 @@
 /****************************************************************
-* Brief
-* Module name:
+* Description: HKY (Hard - key) module handler.
+* Module name: HKY
 * Version: 1_001
 * Date: 29-10-2018
 ****************************************************************/
@@ -16,6 +16,14 @@ bool g_HKY_led_toggle_state;
 
 /*%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% FUNCTIONS IMPLEMENTATION %%%%%%%%%%%%%%%%%%%%%%%%%%% */
 
+/*$PROCEDURE$---------------------------------------------------------------------------------------*/
+/*! \ingroup HKY
+\brief Interface function:
+The function shall initialize hard-key module.
+\return void
+\param void.
+*/
+/*--------------------------------------------------------------------------------------------------*/
 void p_HKY_framer_init(void)
 {
 	/************** 
@@ -45,6 +53,14 @@ void p_HKY_framer_init(void)
 	Serial.print("HKY module init OK.\n\r");
 }
 
+/*$PROCEDURE$---------------------------------------------------------------------------------------*/
+/*! \ingroup HKY
+\brief Interface function:
+The function shall toggle RGB on-board LED.
+\return void
+\param void.
+*/
+/*--------------------------------------------------------------------------------------------------*/
 void p_HKY_rgb_toggle(void)
 {
 	Serial.print("LDR: ");
@@ -57,6 +73,14 @@ void p_HKY_rgb_toggle(void)
 	analogWrite(C_HKY_RGB_LED_BLUE, random(0, 1023));
 }
 
+/*$PROCEDURE$---------------------------------------------------------------------------------------*/
+/*! \ingroup HKY
+\brief Interface function:
+The function shall toggle RGB on-board LED.
+\return void
+\param void.
+*/
+/*--------------------------------------------------------------------------------------------------*/
 void p_HKY_led_toggle(uint16 xi_led, uint16 xi_times)
 {
 	uint16 led_cnt = 0x0;
@@ -69,6 +93,14 @@ void p_HKY_led_toggle(uint16 xi_led, uint16 xi_times)
 	}
 }
 
+/*$PROCEDURE$---------------------------------------------------------------------------------------*/
+/*! \ingroup HKY
+\brief Interface function:
+The function wshall manage read / write from on-board DIPSW.
+\return void
+\param void.
+*/
+/*--------------------------------------------------------------------------------------------------*/
 bool p_HKY_button_pressed(void)
 {
 	return digitalRead(C_HKY_GPIO_BUTTON) == LOW ? true: false;

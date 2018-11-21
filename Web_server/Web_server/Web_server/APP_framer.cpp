@@ -1,6 +1,6 @@
 /****************************************************************
-* Brief
-* Module name:
+* Description: Application top level handler module.
+* Module name: APP.
 * Version: 1_001
 * Date: 29-10-2018
 ****************************************************************/
@@ -33,6 +33,14 @@ static void p_APP_show_spiffs_menu(void);
 
 /*%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% FUNCTIONS IMPLEMENTATION %%%%%%%%%%%%%%%%%%%%%%%%%%% */
 
+/*$PROCEDURE$---------------------------------------------------------------------------------------*/
+/*! \ingroup APP
+\brief Interface function:
+The function init application module.
+\return void
+\param void.
+*/
+/*--------------------------------------------------------------------------------------------------*/
 void p_APP_framer_init(void)
 {
 	Serial.println("System boot ok");
@@ -46,6 +54,14 @@ void p_APP_framer_init(void)
 	
 }
 
+/*$PROCEDURE$---------------------------------------------------------------------------------------*/
+/*! \ingroup APP
+\brief Interface function:
+The function shall manage application cyclic functions.
+\return void
+\param void.
+*/
+/*--------------------------------------------------------------------------------------------------*/
 APP_ERR p_APP_cyclic_main(APP_CYCLE c_cont)
 {
 	if (c_cont == APP_CYCLE_CONTINUE)
@@ -63,6 +79,14 @@ APP_ERR p_APP_cyclic_main(APP_CYCLE c_cont)
 	return (g_APP_err);
 }
 
+/*$PROCEDURE$---------------------------------------------------------------------------------------*/
+/*! \ingroup APP
+\brief Local function:
+The function shall manage main FSM.
+\return void
+\param void.
+*/
+/*--------------------------------------------------------------------------------------------------*/
 void p_APP_main_fsm(void)
 {
 	switch (g_APP_disp_opt)
@@ -104,6 +128,14 @@ void p_APP_main_fsm(void)
 	}
 }
 
+/*$PROCEDURE$---------------------------------------------------------------------------------------*/
+/*! \ingroup APP
+\brief Local function:
+The function shall manage GPIO FSM.
+\return void
+\param void.
+*/
+/*--------------------------------------------------------------------------------------------------*/
 void p_APP_gpio_fsm(void)
 {
 	switch (g_APP_disp_opt)
@@ -133,6 +165,14 @@ void p_APP_gpio_fsm(void)
 	}
 }
 
+/*$PROCEDURE$---------------------------------------------------------------------------------------*/
+/*! \ingroup APP
+\brief Local function:
+The function shall manage WIFI FSM.
+\return void
+\param void.
+*/
+/*--------------------------------------------------------------------------------------------------*/
 void p_APP_wifi_fsm(void)
 {
 	switch (g_APP_disp_opt)
@@ -175,6 +215,14 @@ void p_APP_wifi_fsm(void)
 	}
 }
 
+/*$PROCEDURE$---------------------------------------------------------------------------------------*/
+/*! \ingroup APP
+\brief Local function:
+The function manage Flash file system FSM.
+\return void
+\param void.
+*/
+/*--------------------------------------------------------------------------------------------------*/
 void p_APP_spiffs_fsm(void)
 {
 	switch (g_APP_disp_opt)
@@ -203,6 +251,14 @@ void p_APP_spiffs_fsm(void)
 	}
 }
 
+/*$PROCEDURE$---------------------------------------------------------------------------------------*/
+/*! \ingroup APP
+\brief Local function:
+The function shall print to console main menu.
+\return void
+\param void.
+*/
+/*--------------------------------------------------------------------------------------------------*/
 void p_APP_show_help_menu(void)
 {
 	Serial.println("*********** *********** ***********");
@@ -215,6 +271,14 @@ void p_APP_show_help_menu(void)
 	Serial.println("*********** *********** *********** \n\r");
 }
 
+/*$PROCEDURE$---------------------------------------------------------------------------------------*/
+/*! \ingroup APP
+\brief Local function:
+The function shall print to console GPIO menu.
+\return void
+\param void.
+*/
+/*--------------------------------------------------------------------------------------------------*/
 void p_APP_show_gpio_menu(void)
 {
 	Serial.println("*********** *********** ***********");
@@ -225,6 +289,14 @@ void p_APP_show_gpio_menu(void)
 	Serial.println("*********** *********** *********** \n\r");
 }
 
+/*$PROCEDURE$---------------------------------------------------------------------------------------*/
+/*! \ingroup APP
+\brief Local function:
+The function shall print to console WIFI menu.
+\return void
+\param void.
+*/
+/*--------------------------------------------------------------------------------------------------*/
 void p_APP_show_wifi_menu(void)
 {
 	Serial.println("*********** *********** ***********");
@@ -238,6 +310,14 @@ void p_APP_show_wifi_menu(void)
 	Serial.println("*********** *********** *********** \n\r");
 }
 
+/*$PROCEDURE$---------------------------------------------------------------------------------------*/
+/*! \ingroup APP
+\brief Local function:
+The function shall print to console SPIFFS menu.
+\return void
+\param void.
+*/
+/*--------------------------------------------------------------------------------------------------*/
 void p_APP_show_spiffs_menu(void)
 {
 	Serial.println("*********** *********** ***********");

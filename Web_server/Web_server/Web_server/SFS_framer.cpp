@@ -1,6 +1,6 @@
 /****************************************************************
-* Brief      
-* Module name: 
+* Description: Serial peripheral interface Flash file system API.
+* Module name: SFS
 * Version: 1_001
 * Date: 29-10-2018
 ****************************************************************/
@@ -107,3 +107,8 @@ String p_SFS_get_file_extension(String xi_filename)
 	else if (xi_filename.endsWith(".gz")) return "application/x-gzip";
 	return "text/plain";
 }
+
+void handleFileUpload() 
+{ 
+	
+	}
